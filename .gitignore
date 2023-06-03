@@ -1,0 +1,13 @@
+# Virtual environment
+venv/
+
+# Cache
+**/__pycache__/
+
+
+# user preferred files
+runserver.sh
+/notes.md
+
+
+.env
