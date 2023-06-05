@@ -17,7 +17,7 @@ class ProjectUserRole(models.Model):
     )
 
     project = fields.ForeignKey(
-        "Project", related_name="roles", on_delete=models.CASCADE
+        "my_app.Project", related_name="roles", on_delete=models.CASCADE
     )
     user = fields.ForeignKey(
         "proj.User", related_name="project_roles", on_delete=models.CASCADE

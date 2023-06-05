@@ -1,6 +1,6 @@
 from proj.rules_framework import test_rule
 
-from myapp.models import Project, ProjectUserRole
+from my_app.models import Project, ProjectUserRole
 
 
 def get_project_qs_for_user(user):

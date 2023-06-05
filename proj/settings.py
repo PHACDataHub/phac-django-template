@@ -54,8 +54,6 @@ CORS_ALLOWED_ORIGINS = ["*"]
 # Application definition
 INSTALLED_APPS = configure_apps(
     [
-        "proj.apps.CoreAppConfig",
-        "myapp.apps.MyappConfig",
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
@@ -64,6 +62,8 @@ INSTALLED_APPS = configure_apps(
         "django.contrib.staticfiles",
         "django_extensions",
         "rules.apps.AutodiscoverRulesConfig",
+        "proj.apps.CoreAppConfig",
+        "my_app.apps.MyAppConfig",
         *(["debug_toolbar"] if ENABLE_DEBUG_TOOLBAR else []),
     ]
 )

@@ -34,5 +34,5 @@ class Project(models.Model, BilingualDescriptionMixin, BilingualNameMixin):
 @add_to_admin
 class ProjectTask(models.Model, BilingualDescriptionMixin, BilingualNameMixin):
     project = fields.ForeignKey(
-        "Project", related_name="tasks", on_delete=models.CASCADE
+        Project, related_name="tasks", on_delete=models.CASCADE
     )

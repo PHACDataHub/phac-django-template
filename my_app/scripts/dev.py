@@ -5,9 +5,9 @@ from django.db import transaction
 
 from proj.models import User
 
-from myapp.constants import ADMIN_USER_GROUP
-from myapp.model_factories import ProjectFactory, ProjectTaskFactory
-from myapp.models import Project
+from my_app.constants import ADMIN_USER_GROUP
+from my_app.model_factories import ProjectFactory, ProjectTaskFactory
+from my_app.models import Project
 
 
 @transaction.atomic

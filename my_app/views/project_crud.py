@@ -8,8 +8,8 @@ from django.views.generic import CreateView, DetailView, ListView, UpdateView
 from proj.rules_framework import test_rule
 from proj.text import tdt
 
-from myapp.models import Project, ProjectUserRole
-from myapp.queries import get_project_qs_for_user
+from my_app.models import Project, ProjectUserRole
+from my_app.queries import get_project_qs_for_user
 
 from .project_crud import *
 

@@ -1,6 +1,6 @@
 import factory
 
-from myapp.models import Project, ProjectTag, ProjectTask, ProjectType
+from my_app.models import Project, ProjectTag, ProjectTask, ProjectType
 
 
 class ProjectTypeFactory(factory.django.DjangoModelFactory):

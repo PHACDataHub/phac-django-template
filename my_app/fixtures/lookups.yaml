@@ -1,25 +1,25 @@
-- model: myapp.projecttype
+- model: my_app.projecttype
   pk: 1
   fields:
     name_en: Construction
     name_fr: Construction
     description_en: Construction project
     description_fr: Construction project
-- model: myapp.projecttype
+- model: my_app.projecttype
   pk: 2
   fields:
     name_en: Tech
     name_fr: Tech
     description_en: Tech project
     description_fr: Tech project
-- model: myapp.projecttype
+- model: my_app.projecttype
   pk: 3
   fields:
     name_en: Art
     name_fr: Art
     description_en: Art project
     description_fr: Art project
-- model: myapp.projecttype
+- model: my_app.projecttype
   pk: 4
   fields:
     name_en: Health
@@ -28,7 +28,7 @@
     description_fr: Health project
 
 
-- model: myapp.projecttag
+- model: my_app.projecttag
   pk: 1
   fields:
     name_en: Priority
@@ -36,7 +36,7 @@
     description_en: This project is a priority
     description_fr: This project is a priority
 
-- model: myapp.projecttag
+- model: my_app.projecttag
   pk: 2
   fields:
     name_en: Meta
@@ -44,7 +44,7 @@
     description_en: This project is about projects
     description_fr: This project is about projects
 
-- model: myapp.projecttag
+- model: my_app.projecttag
   pk: 3
   fields:
     name_en: Expensive
@@ -52,7 +52,7 @@
     description_en: This project is expensive
     description_fr: This project is expensive
 
-- model: myapp.projecttag
+- model: my_app.projecttag
   pk: 4
   fields:
     name_en: Essential
