@@ -5,6 +5,7 @@
     name_fr: Construction
     description_en: Construction project
     description_fr: Construction project
+    code: construction
 - model: my_app.projecttype
   pk: 2
   fields:
@@ -12,6 +13,7 @@
     name_fr: Tech
     description_en: Tech project
     description_fr: Tech project
+    code: tech
 - model: my_app.projecttype
   pk: 3
   fields:
@@ -19,6 +21,7 @@
     name_fr: Art
     description_en: Art project
     description_fr: Art project
+    code: art
 - model: my_app.projecttype
   pk: 4
   fields:
@@ -26,6 +29,7 @@
     name_fr: Health
     description_en: Health project
     description_fr: Health project
+    code: health
 
 
 - model: my_app.projecttag

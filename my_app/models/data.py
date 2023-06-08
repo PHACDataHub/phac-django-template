@@ -9,7 +9,7 @@ from .model_util import BilingualDescriptionMixin, BilingualNameMixin
 
 @track_versions
 @add_to_admin
-class Project(models.Model, BilingualDescriptionMixin, BilingualNameMixin):
+class Project(BilingualDescriptionMixin, BilingualNameMixin):
     ACTIVE_STATUS = "active"
     ONHOLD_STATUS = "onhold"
     CANCELLED_STATUS = "cancelled"
@@ -28,11 +28,24 @@ class Project(models.Model, BilingualDescriptionMixin, BilingualNameMixin):
         null=False,
         default=ACTIVE_STATUS,
     )
+    project_type = fields.ForeignKey(
+        "my_app.ProjectType",
+        related_name="projects",
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name=tdt("Project Type"),
+    )
+    tags = fields.ManyToManyField(
+        "my_app.ProjectTag", related_name="projects", blank=True
+    )
+
+    def get_user_role(self, user):
+        return self.roles.filter(user=user).first()
 
 
 @track_versions
 @add_to_admin
-class ProjectTask(models.Model, BilingualDescriptionMixin, BilingualNameMixin):
+class ProjectTask(BilingualDescriptionMixin, BilingualNameMixin):
     project = fields.ForeignKey(
         Project, related_name="tasks", on_delete=models.CASCADE
     )

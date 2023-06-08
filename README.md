@@ -39,6 +39,13 @@ TODO: consider making this a cookie-cutter template? Might not be worth it...
     - `sample_db_user` -> `<your_db_user>`
     - `sample_db_test` -> `<your_db_test_name>` (just add `_test` as a suffix to DB name)
 4. Follow the instructions in the "Configuring dev environment" section above and check that everything works 
-5. Delete this section of the README
+5. Delete this section and the next section of the README
 6. remove the .env file from the repo (you probably want to keep it locally though, maybe `git rm –cached .env`?)
+
+
+# TODO: things to add to this template project
+
+- HTMX example w/ project tasks, maybe multiple examples
+- extract utils into phac-helpers
+- Add excel export
 

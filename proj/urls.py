@@ -3,6 +3,8 @@ from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path, re_path
 
+from my_app.urls import urlpatterns as my_app_urls
+
 from .views import LoginView, LogoutView, RootView
 
 dev_routes = []
@@ -16,6 +18,8 @@ urlpatterns = i18n_patterns(
     path("phac_admin/", admin.site.urls),
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
+    path("", include(my_app_urls)),
+    prefix_default_language=False,
 ) + [
     re_path("^$", RootView.as_view(), name="root"),
     *dev_routes,

@@ -4,9 +4,12 @@ from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import RedirectView
 
+from proj.middleware import AllowUnauthenticatedMixin
+
 
 def get_redirect_for_user(user):
-    return reverse("list_indicators")
+    return reverse("list_projects")
+
 
 class LoginView(BaseLoginView):
     template_name = "login.jinja2"
@@ -19,7 +22,7 @@ class LoginView(BaseLoginView):
             return super().get(request, *args, **kwargs)
 
 
-class RootView(RedirectView):
+class RootView(AllowUnauthenticatedMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         if not self.request.user.is_authenticated:
             return reverse("login")

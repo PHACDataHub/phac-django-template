@@ -7,7 +7,12 @@ from proj.models import User
 
 from my_app.constants import ADMIN_USER_GROUP
 from my_app.model_factories import ProjectFactory, ProjectTaskFactory
-from my_app.models import Project
+from my_app.models import Project, ProjectUserRole
+from my_app.services import (
+    set_project_contributor,
+    set_project_leader,
+    set_project_spectator,
+)
 
 
 @transaction.atomic
@@ -41,14 +46,14 @@ def run():
     for _x in range(1, 10):
         proj = ProjectFactory()
 
-        leader = random.choice(users)
-        proj.add_user(leader, Project.LEADER_ROLE)
+        leader = random.choice([*users])
+        set_project_leader(proj, leader)
 
-        contributor = random.choice(users - {leader})
-        proj.add_user(contributor, Project.CONTRIBUTOR_ROLE)
+        contributor = random.choice(list(users - {leader}))
+        set_project_contributor(proj, contributor)
 
-        spectator = random.choice(users - {leader, contributor})
-        proj.add_user(spectator, Project.SPECTATOR_ROLE)
+        spectator = random.choice(list(users - {leader, contributor}))
+        set_project_spectator(proj, spectator)
 
         for x in range(1, random.randint(0, 4)):
             ProjectTaskFactory(project=proj)

@@ -8,7 +8,17 @@ import phac_aspc.django.helpers.templatetags as phac_aspc
 from jinja2 import Environment, pass_context
 from jinja2.ext import Extension, nodes
 
+from proj.rules_framework import test_rule
+
 from .text import tdt, tm
+
+
+@pass_context
+def respects_rule(context, rule, obj=None):
+    user = context["request"].user
+    if not user.is_authenticated:
+        return False
+    return test_rule(rule, user, obj)
 
 
 class LanguageExtension(Extension):

@@ -12,6 +12,10 @@ translation_entries = {
         "fr": "Se connecter",
     },
     "logout": {"en": "Logout", "fr": "Fermeture de session"},
+    "please_login_to_see_page": {
+        "en": "Please log in to see this page.",
+        "fr": "Veuillez vous connecter pour voir cette page.",
+    },
     "bad_user_name_and_password": {
         "en": "Your username and password didn't match. Please try again.",
         "fr": "Votre nom d'utilisateur et votre mot de passe ne correspondent pas. Veuillez essayer de nouveau.",
@@ -45,5 +49,9 @@ translation_entries = {
         "fr": None,
         "translated_using": "No",
         "fr_auto": "Non",
+    },
+    "close": {
+        "en": "Close",
+        "fr": "Fermer",
     },
 }

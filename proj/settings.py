@@ -90,13 +90,14 @@ MIDDLEWARE = configure_middleware(
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware",
         "django.middleware.clickjacking.XFrameOptionsMiddleware",
+        "proj.middleware.MustBeLoggedInMiddleware",
         "versionator.middleware.WhodidMiddleware",
     ]
 )
 
 
 LOGIN_URL = "/login"
-LOGIN_REDIRECT_URL = reverse_lazy("list_indicators")
+LOGIN_REDIRECT_URL = reverse_lazy("list_projects")
 
 
 ROOT_URLCONF = "proj.urls"

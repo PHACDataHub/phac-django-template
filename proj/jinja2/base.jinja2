@@ -39,7 +39,6 @@
         modalInstance = new bootstrap.Modal(document.getElementById('modal'))
         modalInstance.show()
       }
-      //htmx.on("htmx:afterOnLoad",openModal)
       document.addEventListener('activate-modal', function (event) {
         openModal();
       });
@@ -96,11 +95,13 @@
         </div>
       </nav>
     {% endblock %}
-    <main class="pt-3 pb-5">
+    <main class="pt-3 pb-5" style="min-height: 85vh">
       {% if messages %}
-        {% for message in messages %}
-          <div class="px-5 my-0 rounded-0 django-message alert alert-{{ message_type(message) }}">{{ message }}</div>
-        {% endfor %}
+        <div style="margin-top: -1rem;">
+          {% for message in messages %}
+            <div class="px-5 my-0 rounded-0 django-message alert alert-{{ message_type(message) }}">{{ message }}</div>
+          {% endfor %}
+        </div>
       {% endif %}
       <div>
         <div id="content" class='container'>
