@@ -4,12 +4,15 @@ venv/
 # Cache
 **/__pycache__/
 
+# Django
+staticfiles
+
+# Secrets
+.env*.*
 
 # user preferred files
 runserver.sh
 /notes.md
 
-
-.env
-
 _old_myapp
+
