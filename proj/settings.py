@@ -80,7 +80,6 @@ MIDDLEWARE = configure_middleware(
             if ENABLE_DEBUG_TOOLBAR
             else []
         ),
-        "django.middleware.locale.LocaleMiddleware",
         "django.middleware.common.CommonMiddleware",
         "django.middleware.security.SecurityMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
