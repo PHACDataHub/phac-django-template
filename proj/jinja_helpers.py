@@ -79,6 +79,14 @@ def url_to_other_lang(context):
     return convert_url_other_lang(full_uri)
 
 
+def get_lang_code():
+    """
+    Provides the language code for the current language
+    """
+    current_lang = get_language()
+    return current_lang.lower()
+
+
 def get_other_lang_code():
     """
     Provides the language code for the other language (Ex. if current lang
@@ -137,6 +145,7 @@ def environment(**options):
             "list": list,
             "url": reverse,
             "url_to_other_lang": url_to_other_lang,
+            "get_lang_code": get_lang_code,
             "get_other_lang_code": get_other_lang_code,
             "get_other_lang": get_other_lang,
             "get_lang": get_language,

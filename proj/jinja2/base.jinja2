@@ -55,6 +55,7 @@
     {% block nav_container %}
       <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container">
+          {{ phac_aspc.phac_aspc_inline_svg("phac_aspc_helpers/phac_logos/" + ("en" if get_lang_code() == "en-ca" else "fr") + "__dark.svg", style="height: 2rem; padding-right: 2rem;") }}
           {% block available_apps %}{% endblock %}
           <button class="navbar-toggler"
                   type="button"
