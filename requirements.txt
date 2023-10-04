@@ -1,6 +1,6 @@
 django-debug-toolbar==3.8.1
 django-extensions==3.2.1
-django-phac_aspc-helpers==0.4.3
+django-phac_aspc-helpers==1.1.1
 django-versionator==0.0.1b0
 Django==4.1.9
 Faker==15.1.1
