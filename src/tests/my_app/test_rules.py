@@ -1,10 +1,11 @@
 from django.test.client import Client
 from django.urls import reverse
 
-from proj.models import User
-
 # creating a variable called test_rules triggers pytest to run it as a test! annoying!
-from proj.rules_framework import test_rule as my_test_rule
+from phac_aspc.rules import patch_rules
+from phac_aspc.rules import test_rule as my_test_rule
+
+from proj.models import User
 
 from my_app.model_factories import ProjectFactory
 from my_app.services import (
@@ -12,7 +13,6 @@ from my_app.services import (
     set_project_leader,
     set_project_spectator,
 )
-from tests.utils_for_testing import patch_rules
 
 
 def test_admin_has_all_access(admin_user):

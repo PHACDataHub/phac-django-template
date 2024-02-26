@@ -23,9 +23,8 @@ exclude = '''
 profile = "black"
 line_length = 79
 known_django = "django"
-known_myapp = "my_app"
 known_proj = "proj"
-sections=[ "FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "PROJ", "my_app", "FIRSTPARTY", "LOCALFOLDER" ]
+sections=[ "FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "PROJ", "FIRSTPARTY", "LOCALFOLDER" ]
 skip_glob=['*/migrations/*.py']
 
 

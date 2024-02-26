@@ -2,15 +2,14 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils.functional import cached_property
 
-from proj.model_util import (
-    add_to_admin,
-)
+from proj.model_util import add_to_admin
 
 
 class GroupPrefetcherManager(UserManager):
     """
-        groups are used for authorization and are accessed every request
+    groups are used for authorization and are accessed every request
     """
+
     use_for_related_fields = True
 
     def get_queryset(self):

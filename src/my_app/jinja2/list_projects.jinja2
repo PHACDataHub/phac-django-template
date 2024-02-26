@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>{{ tdt("Project list") }}</h1>
-  <a href="{{ url('create_project')}}">{{ tdt('Create new project') }}</a>
+  <a href="{{ url("create_project") }}">{{ tdt("Create new project") }}</a>
 
   <ul>
     {% for project in object_list %}

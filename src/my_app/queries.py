@@ -1,4 +1,4 @@
-from proj.rules_framework import test_rule
+from phac_aspc.rules import test_rule
 
 from my_app.models import Project, ProjectUserRole
 

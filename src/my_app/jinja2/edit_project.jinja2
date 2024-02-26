@@ -1,7 +1,7 @@
 {% extends "base.jinja2" %}
 {% block content %}
-  <h1>{{ tdt("Create project") }}</h1>
-  <a href="{{ url('list_projects') }}" class="btn btn-warning">{{ tdt('Cancel') }}</a>
+  <h1>{{ tdt("Edit project") }} : {{ object.name }}</h1>
+  <a href="{{ url("list_projects") }}" class="btn btn-warning">{{ tdt("Cancel") }}</a>
 
   <form method="post">
     {% include "_project_form.jinja2" %}
@@ -9,9 +9,8 @@
     <div class="text-end">
       <input class="btn btn-success btn-lg"
              type="submit"
-             value="{{ tdt('Create') }}">
+             value="{{ tdt("Modify") }}">
     </div>
 
   </form>
-
 {% endblock %}

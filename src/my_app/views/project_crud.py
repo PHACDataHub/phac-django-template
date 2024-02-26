@@ -10,8 +10,9 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
+from phac_aspc.rules import test_rule
+
 from proj.form_util import BootstrapMixin
-from proj.rules_framework import test_rule
 from proj.text import tdt
 
 from my_app.models import Project, ProjectUserRole
