@@ -29,7 +29,6 @@ class CustomVersionModel(VersionModel):
         related_name="+",
     )
 
-
     @property
     def previous_version(self):
         return (
@@ -44,6 +43,7 @@ class CustomVersionModel(VersionModel):
     @classmethod
     def get_fields_to_version(cls):
         return [f for f in cls.live_model._meta.fields if f.concrete]
+
 
 def create_history_decorator(version_base_class):
     """

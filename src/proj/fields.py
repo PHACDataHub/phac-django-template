@@ -27,7 +27,6 @@ migration_ignored_attrs = [
 ]
 
 
-
 class IgnoreMigrationAttrsMixin:
     def __init__(self, *args, extra_options=None, description="", **kwargs):
         self.extra_options = extra_options or {}
@@ -73,15 +72,11 @@ class EmptyToNullMixin:
             super().__init__(*args, **kwargs)
 
 
-class CharField(
-    IgnoreMigrationAttrsMixin, EmptyToNullMixin, models.CharField
-):
+class CharField(IgnoreMigrationAttrsMixin, EmptyToNullMixin, models.CharField):
     pass
 
 
-class TextField(
-    IgnoreMigrationAttrsMixin, EmptyToNullMixin, models.TextField
-):
+class TextField(IgnoreMigrationAttrsMixin, EmptyToNullMixin, models.TextField):
     def deconstruct(self):
         # according to django docs, TextField char-limits are not enforced at the DB level
         name, path, args, kwargs = super().deconstruct()
@@ -129,7 +124,9 @@ class IntegerField(IgnoreMigrationAttrsMixin, models.IntegerField):
     pass
 
 
-class PositiveIntegerField(IgnoreMigrationAttrsMixin, models.PositiveIntegerField):
+class PositiveIntegerField(
+    IgnoreMigrationAttrsMixin, models.PositiveIntegerField
+):
     pass
 
 
