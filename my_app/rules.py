@@ -1,4 +1,4 @@
-from proj.rules_framework import add_rule, auto_rule
+from phac_aspc.rules import add_rule, auto_rule
 
 from .constants import ADMIN_USER_GROUP
 from .models import ProjectUserRole

@@ -7,8 +7,7 @@ from django.utils.translation import activate, get_language, override
 import phac_aspc.django.helpers.templatetags as phac_aspc
 from jinja2 import Environment, pass_context
 from jinja2.ext import Extension, nodes
-
-from proj.rules_framework import test_rule
+from phac_aspc.rules import test_rule
 
 from .text import tdt, tm
 
