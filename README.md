@@ -24,6 +24,16 @@ In repo root,
 2. `python manage.py loaddata my_app/fixtures/lookups.yaml`
 3. `python manage.py runscript my_app.scripts.dev`
 
+
+## Manually running auto-formatting
+
+In the case your CI is failing due to formatting issues, you can run the following commands to fix them all.
+
+1. `isort omd --settings-path pyproject.toml`
+2. `black omd/ --config pyproject.toml`
+3. `djlint --reformat omd --configuration pyproject.toml`
+
+
 # Adapting this template to your new project
 
 TODO: consider making this a cookie-cutter template? Might not be worth it...
@@ -48,4 +58,6 @@ TODO: consider making this a cookie-cutter template? Might not be worth it...
 - HTMX example w/ project tasks, maybe multiple examples
 - extract utils into phac-helpers
 - Add excel export
+
+
 
