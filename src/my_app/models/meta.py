@@ -1,6 +1,7 @@
 from django.db import models
 
-from proj import fields
+from phac_aspc.django import fields
+
 from proj.model_util import add_to_admin, track_versions
 from proj.models import User
 from proj.text import tdt
@@ -23,4 +24,5 @@ class ProjectUserRole(models.Model):
     user = fields.ForeignKey(
         User, related_name="project_roles", on_delete=models.CASCADE
     )
+    role = fields.CharField(max_length=50, choices=ROLE_CHOICES)
     role = fields.CharField(max_length=50, choices=ROLE_CHOICES)

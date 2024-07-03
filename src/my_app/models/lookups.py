@@ -1,6 +1,7 @@
 from django.db import models
 
-from proj import fields
+from phac_aspc.django import fields
+
 from proj.model_util import add_to_admin, track_versions
 
 from .model_util import BilingualDescriptionMixin, BilingualNameMixin
@@ -17,4 +18,5 @@ class ProjectType(BilingualDescriptionMixin, BilingualNameMixin):
 @track_versions
 @add_to_admin
 class ProjectTag(BilingualNameMixin, BilingualDescriptionMixin):
+    pass
     pass

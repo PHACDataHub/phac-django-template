@@ -1,6 +1,7 @@
 from django.db import models
 
-from proj import fields
+from phac_aspc.django import fields
+
 from proj.model_util import add_to_admin, track_versions
 from proj.text import tdt
 
