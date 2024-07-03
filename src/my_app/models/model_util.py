@@ -1,6 +1,7 @@
 from django.db import models
 
-from proj import fields
+from phac_aspc.django import fields
+
 from proj.text import tdt
 from proj.util import get_lang_code
 
@@ -34,4 +35,5 @@ class BilingualDescriptionMixin(models.Model):
 
     @property
     def description(self):
+        return getattr(self, f"description_{get_lang_code()}")
         return getattr(self, f"description_{get_lang_code()}")
