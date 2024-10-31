@@ -11,7 +11,18 @@ from phac_aspc.rules import test_rule
 
 from .text import tdt, tm
 
+_to_add_to_env = {}
 
+
+def add_to_env(func, name=None):
+    if name is None:
+        name = func.__name__
+    _to_add_to_env[name] = func
+
+    return func
+
+
+@add_to_env
 @pass_context
 def respects_rule(context, rule, obj=None):
     user = context["request"].user
@@ -66,6 +77,7 @@ def convert_url_other_lang(url_str):
     return urlunparse(new_url)
 
 
+@add_to_env
 @pass_context
 def url_to_other_lang(context):
     """
@@ -78,6 +90,7 @@ def url_to_other_lang(context):
     return convert_url_other_lang(full_uri)
 
 
+@add_to_env
 def get_lang_code():
     """
     Provides the language code for the current language
@@ -98,6 +111,7 @@ def get_other_lang_code():
     return "en-ca"
 
 
+@add_to_env
 def get_other_lang():
     """
     Returns the language not currently being used (Ex. if current lang
@@ -110,6 +124,7 @@ def get_other_lang():
     return "English"
 
 
+@add_to_env
 def message_type(message):
     # remaps the message level tag to the bootstrap alert type
     if message.level_tag == "error":
@@ -118,6 +133,7 @@ def message_type(message):
         return f"{message.level_tag}"
 
 
+@add_to_env
 @pass_context
 def ipython(context):
     from IPython import embed
@@ -126,36 +142,21 @@ def ipython(context):
     return ""
 
 
-def message_type(message):
-    # remaps the message level tag to the bootstrap alert type
-    if message.level_tag == "error":
-        return "danger"
-    else:
-        return f"{message.level_tag}"
-
-
 def environment(**options):
     env = Environment(**options)
     env.globals.update(
         {
+            **_to_add_to_env,
             "getattr": getattr,
             "hasattr": hasattr,
             "len": len,
             "list": list,
             "url": reverse,
-            "url_to_other_lang": url_to_other_lang,
-            "get_lang_code": get_lang_code,
-            "get_other_lang_code": get_other_lang_code,
-            "get_other_lang": get_other_lang,
-            "get_lang": get_language,
             "urlencode": urlencode,
             "static": static,
             "phac_aspc": phac_aspc,
-            "message_type": message_type,
-            "ipython": ipython,
             "tm": tm,
             "tdt": tdt,
-            "message_type": message_type,
             "print": print,
         }
     )
