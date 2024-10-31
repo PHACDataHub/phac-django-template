@@ -29,9 +29,9 @@ In repo root,
 
 In the case your CI is failing due to formatting issues, you can run the following commands to fix them all.
 
-1. `isort omd --settings-path pyproject.toml`
-2. `black omd/ --config pyproject.toml`
-3. `djlint --reformat omd --configuration pyproject.toml`
+1. `isort src --settings-path pyproject.toml`
+2. `black src/ --config pyproject.toml`
+3. `djlint --reformat src --configuration pyproject.toml`
 
 
 # Adapting this template to your new project
