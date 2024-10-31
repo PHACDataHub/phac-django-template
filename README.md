@@ -2,7 +2,7 @@
 
 ## Configuring dev environment
 
-1. install python3.10 and postgresql as specified [here](https://github.com/PHACDataHub/phac-django-docs/blob/master/local-dev.md#installing-and-using-postgres-wout-sci-ops-on-windows)
+1. install python3.11 and postgresql as specified [here](https://github.com/PHACDataHub/phac-django-docs/blob/master/local-dev.md#installing-and-using-postgres-wout-sci-ops-on-windows)
 
 **setup virtualenv**
 
