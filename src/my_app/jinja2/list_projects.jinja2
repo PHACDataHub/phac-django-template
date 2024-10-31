@@ -7,8 +7,8 @@
   <ul>
     {% for project in object_list %}
       <li>
-        <a hx-target="#modal-moint-point"
-           hx-swap="innerHTML"
+        <a hx-select-oob="#modal-mount-point"
+           hx-swap="none"
            hx-get="{{ url('preview_project_modal', args=[project.id]) }}"
            href="#">{{ project.name }}</a>
       </li>
@@ -16,4 +16,3 @@
   </ul>
  
 {% endblock %}
-```

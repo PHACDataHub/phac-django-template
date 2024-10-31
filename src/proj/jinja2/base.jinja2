@@ -24,23 +24,32 @@
     {% block extra_scripts_css %}{% endblock %}
   </head>
   <body hx-ext="morph">
-    <div id="modal-moint-point"></div>
+    <div class="d-none">
+      <div id="dummy-target">{# useful when you need a dummy htmx target (e.g. oob swaps)  #}</div>
+    </div>
+    <div id="modal-mount-point" hx-swap-oob="outerHTML"></div>
     <script>
-      let modalInstance = null;
       let lastFocusedElement = null;
+      const getModalEl = () => document.querySelector('#modal-mount-point > .modal');
       document.addEventListener('hidden.bs.modal', function (event) {
+        const modalInstance = bootstrap.Modal.getInstance(getModalEl());
+        if(modalInstance){
+          modalInstance.dispose();
+        }
+        document.querySelector('#modal-mount-point').innerHTML = '';
         if(lastFocusedElement){
           lastFocusedElement.focus();
         }
       });
       function openModal(){
         lastFocusedElement = document.activeElement;
-        modalInstance = new bootstrap.Modal(document.getElementById('modal'))
+        const modalInstance = bootstrap.Modal.getOrCreateInstance(getModalEl());
         modalInstance.show()
       }
       document.addEventListener('activate-modal', function (event) {
         openModal();
       });
+
     </script>
     <script>
       {# include csrf tokens in htmx request, see https://www.mattlayman.com/blog/2021/how-to-htmx-django/ included below because body needs to exist #}
