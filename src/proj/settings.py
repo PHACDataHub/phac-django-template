@@ -65,6 +65,7 @@ INSTALLED_APPS = configure_apps(
         "proj.apps.CoreAppConfig",
         "my_app.apps.MyAppConfig",
         *(["debug_toolbar"] if ENABLE_DEBUG_TOOLBAR else []),
+        "django_htmx",
     ]
 )
 
@@ -92,6 +93,7 @@ MIDDLEWARE = configure_middleware(
         "data_fetcher.middleware.GlobalRequestMiddleware",
         "proj.middleware.MustBeLoggedInMiddleware",
         "versionator.middleware.WhodidMiddleware",
+        "django_htmx.middleware.HtmxMiddleware",
     ]
 )
 

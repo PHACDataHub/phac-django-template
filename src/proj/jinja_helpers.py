@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import activate, get_language, override
 
 import phac_aspc.django.helpers.templatetags as phac_aspc
+from django_htmx.templatetags.django_htmx import django_htmx_script
 from jinja2 import Environment, pass_context
 from jinja2.ext import Extension, nodes
 from phac_aspc.rules import test_rule
@@ -158,6 +159,7 @@ def environment(**options):
             "tm": tm,
             "tdt": tdt,
             "print": print,
+            "django_htmx_script": django_htmx_script,
         }
     )
     env.filters["quote"] = lambda x: quote(str(x))
