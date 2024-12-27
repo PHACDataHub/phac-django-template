@@ -13,13 +13,13 @@
           rel="icon"
           type="image/x-icon"
           class="wb-init wb-favicon-inited">
-    <link rel="stylesheet" href="{{ static("third_party/css/bootstrap.min.css") }}" />
-    <link rel="stylesheet" href="{{ static("site.css") }}" />
+    <link rel="stylesheet" href="{{ static('third_party/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ static('site.css') }}" />
     <script src="{{ static('third_party/js/jquery-3.2.1.min.js') }}"></script>
     <script src="{{ static('third_party/js/htmx.min.js') }}"></script>
     <script src="{{ static('third_party/js/idiomorph.min.js') }}"></script>
     <script src="{{ static('third_party/js/idiomorph-ext.min.js') }}"></script>
-    {% if debug %}<script src="{{ static('third_party/js/htmx-debug.js') }}"></script>{% endif %}
+    {% if debug %}{{ django_htmx_script() }}{% endif %}
     {% block medias %}{% endblock %}
     {% block extra_scripts_css %}{% endblock %}
   </head>
@@ -87,7 +87,7 @@
                      aria-haspopup="true"
                      aria-expanded="false">{{ request.user }}</a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ url("logout") }}">
+                    <a class="dropdown-item" href="{{ url('logout') }}">
                       <i class="fa fa-power-off"></i>
                       {{ tm("logout") }}
                     </a>
@@ -134,7 +134,7 @@
         <div class="row">
           <div class="col"></div>
           <div class="col-auto">
-            <object type="image/svg+xml" tabindex="-1" role="img" data="{{ static("third_party/img/wmms-blk.svg") }}" aria-label="Symbol of the Government of Canada" style="height: 2rem; margin: 1rem 0;"></object>
+            <object type="image/svg+xml" tabindex="-1" role="img" data="{{ static('third_party/img/wmms-blk.svg') }}" aria-label="Symbol of the Government of Canada" style="height: 2rem; margin: 1rem 0;"></object>
           </div>
         </div>
       </div>
