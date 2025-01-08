@@ -1,10 +1,20 @@
 from django.contrib.auth.views import LoginView as BaseLoginView
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import RedirectView
 
 from proj.middleware import AllowUnauthenticatedMixin
+
+
+class LogoutView(BaseLogoutView):
+    http_method_names = ["get", "post", "options"]
+
+    def get_success_url(self):
+        return reverse("login")
+
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
 
 
 def get_redirect_for_user(user):
