@@ -95,10 +95,7 @@ class ProjectPreviewModal(ModalBaseTemplate):
                         h.th[tdt("description")],
                         h.td[obj.description],
                     ],
-                    h.tr[
-                        h.td[tdt("business ID")],
-                        h.td[obj.business_key],
-                    ],
+                    h.tr[h.td[tdt("business ID")],],
                 ],
             ],
             h.a(
