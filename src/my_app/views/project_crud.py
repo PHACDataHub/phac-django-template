@@ -17,8 +17,7 @@ from proj.text import tdt
 
 from my_app.models import Project, ProjectUserRole
 from my_app.queries import get_project_qs_for_user
-
-from .project_crud import *
+from my_app.router import route
 
 
 class ProjectForm(ModelForm, StandardFormMixin):
@@ -34,6 +33,7 @@ class ProjectForm(ModelForm, StandardFormMixin):
         ]
 
 
+@route("projects/create/", name="create_project")
 class CreateProject(CreateView):
     form_class = ProjectForm
     model = Project
@@ -56,6 +56,7 @@ class CreateProject(CreateView):
         return reverse("edit_project", args=[self.object.id])
 
 
+@route("projects/<int:pk>/edit/", name="edit_project")
 class EditProject(UpdateView):
     model = Project
     form_class = ProjectForm
@@ -81,6 +82,7 @@ class EditProject(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
+@route("projects/", name="list_projects")
 class ListProjects(ListView):
     template_name = "list_projects.jinja2"
 
@@ -88,6 +90,7 @@ class ListProjects(ListView):
         return get_project_qs_for_user(self.request.user)
 
 
+@route("projects/<int:pk>/preview_modal/", name="preview_project_modal")
 class ProjectPreviewModal(DetailView):
     model = Project
     template_name = "project_preview_modal.jinja2"
