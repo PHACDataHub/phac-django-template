@@ -22,7 +22,9 @@ class Project(BilingualDescriptionMixin, BilingualNameMixin):
         (COMPLETED_STATUS, tdt("Completed")),
     )
 
-    business_key = fields.CharField(max_length=50, unique=True)
+    business_key = fields.CharField(
+        max_length=50, unique=True, null=True, default=None
+    )
     status = fields.CharField(
         max_length=50,
         choices=STATUS_CHOICES,
