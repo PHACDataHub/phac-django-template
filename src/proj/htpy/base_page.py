@@ -1,4 +1,5 @@
 from django.http import HttpRequest
+from django.middleware.csrf import get_token
 from django.templatetags.static import static
 from django.urls import reverse
 
@@ -69,6 +70,7 @@ class BasePageTemplate(HtpyComponent):
             h.script(src=static("third_party/js/htmx.min.js")),
             h.script(src=static("third_party/js/idiomorph.min.js")),
             h.script(src=static("third_party/js/idiomorph-ext.min.js")),
+            h.script(src=static("third_party/js/bootstrap.bundle.min.js")),
             Markup(django_htmx_script()) if is_debug else None,
             self.head_medias(),
             self.head_extra_scripts_css(),
@@ -150,34 +152,7 @@ class BasePageTemplate(HtpyComponent):
             ],
         ]
 
-    def modal_script(self):
-        return Markup(
-            """<script>
-      let lastFocusedElement = null;
-      const getModalEl = () => document.querySelector('#modal-mount-point > .modal');
-      document.addEventListener('hidden.bs.modal', function (event) {
-        const modalInstance = bootstrap.Modal.getInstance(getModalEl());
-        if(modalInstance){
-          modalInstance.dispose();
-        }
-        document.querySelector('#modal-mount-point').innerHTML = '';
-        if(lastFocusedElement){
-          lastFocusedElement.focus();
-        }
-      });
-      function openModal(){
-        lastFocusedElement = document.activeElement;
-        const modalInstance = bootstrap.Modal.getOrCreateInstance(getModalEl());
-        modalInstance.show()
-      }
-      document.addEventListener('activate-modal', function (event) {
-        openModal();
-      });
-    </script>"""
-        )
-
     def csrf_script(self):
-        from django.middleware.csrf import get_token
 
         csrf_token = get_token(self.request)
         return Markup(
@@ -242,35 +217,29 @@ class BasePageTemplate(HtpyComponent):
         ]
 
     def render(self):
-        return (
-            Markup("<!DOCTYPE html>\n")
-            + h.html(lang="en")[
-                self.head(),
-                h.body(hx_ext="morph")[
-                    h.div(".d-none")[h.div(id="dummy-target")],
-                    h.div(id="modal-mount-point", hx_swap_oob="outerHTML"),
-                    self.modal_script(),
-                    self.csrf_script(),
-                    self.nav_container(),
-                    h.main(".pt-3.pb-5", style="min-height: 85vh")[
-                        self.messages(),
-                        h.div[
-                            h.div("#content.container")[self.content()],
-                            h.div("#content-fluid.container-fluid.p-0")[
-                                h.div(".ms-5.me-5")[self.content_fluid()],
-                            ],
+        return h.html(lang="en")[
+            self.head(),
+            h.body(hx_ext="morph")[
+                h.div(".d-none")[h.div(id="dummy-target")],
+                h.div(id="modal-mount-point", hx_swap_oob="outerHTML"),
+                h.script(src=static("site.js")),
+                self.csrf_script(),
+                self.nav_container(),
+                h.main(".pt-3.pb-5", style="min-height: 85vh")[
+                    self.messages(),
+                    h.div[
+                        h.div("#content.container")[self.content()],
+                        h.div("#content-fluid.container-fluid.p-0")[
+                            h.div(".ms-5.me-5")[self.content_fluid()],
                         ],
                     ],
-                    h.div("#modal.modal.fade", tabindex="-1")[
-                        h.div("#dialog.modal-dialog", hx_target="this"),
-                    ],
-                    self.footer(),
-                    h.script(
-                        src=static("third_party/js/bootstrap.bundle.min.js")
-                    ),
                 ],
-            ]
-        )
+                h.div("#modal.modal.fade", tabindex="-1")[
+                    h.div("#dialog.modal-dialog", hx_target="this"),
+                ],
+                self.footer(),
+            ],
+        ]
 
 
 class BasePageComponent(BasePageTemplate):
