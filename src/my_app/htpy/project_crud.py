@@ -4,7 +4,7 @@ import htpy as h
 
 from proj.htpy.base_page import BasePageTemplate
 from proj.htpy.generic_form import GenericForm
-from proj.htpy.modal_base import ModalBaseTemplate
+from proj.htpy.modal_base import ModalComponent
 from proj.text import tdt
 
 
@@ -17,11 +17,11 @@ class ListProjectsPage(BasePageTemplate):
                 [
                     h.li[
                         h.a(
-                            hx_select_oob="#modal-mount-point",
-                            hx_swap="none",
                             hx_get=reverse(
                                 "preview_project_modal", args=[project.id]
                             ),
+                            hx_target="#modal-slot",
+                            hx_swap="innerHTML",
                             href="#",
                         )[project.name],
                     ]
@@ -81,25 +81,25 @@ class EditProjectPage(BasePageTemplate):
         ]
 
 
-class ProjectPreviewModal(ModalBaseTemplate):
-    def title(self):
-        return tdt("Project preview")
+def ProjectPreviewModal(context, request):
+    obj = context["object"]
 
-    def body(self):
-        obj = self.context["object"]
-        return [
-            h.h2[obj.name],
-            h.table(".table")[
-                h.tbody[
-                    h.tr[
-                        h.th[tdt("description")],
-                        h.td[obj.description],
-                    ],
-                    h.tr[h.td[tdt("business ID")],],
+    return ModalComponent(
+        title=tdt("Project preview"),
+        size_cls="modal-xl",
+    )[
+        h.h2[obj.name],
+        h.table(".table")[
+            h.tbody[
+                h.tr[
+                    h.th[tdt("description")],
+                    h.td[obj.description],
                 ],
+                h.tr[h.td[tdt("business ID")],],
             ],
-            h.a(
-                href=reverse("edit_project", args=[obj.id]),
-                class_="btn btn-primary",
-            )[tdt("Edit project")],
-        ]
+        ],
+        h.a(
+            href=reverse("edit_project", args=[obj.id]),
+            class_="btn btn-primary",
+        )[tdt("Edit project")],
+    ]

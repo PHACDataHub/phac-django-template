@@ -111,10 +111,7 @@ class ProjectPreviewModal(DetailView, HtpyTemplateMixin):
         ):
             raise PermissionDenied(tdt("You can't view this project"))
 
-        resp = super().dispatch(request, *args, **kwargs)
-        # add header
-        resp["HX-Trigger-After-Settle"] = "activate-modal"
-        return resp
+        return super().dispatch(request, *args, **kwargs)
 
 
 @route("projects/<int:pk>/detail/", name="project_detail")

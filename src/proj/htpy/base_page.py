@@ -1,3 +1,4 @@
+from django.contrib.messages import get_messages
 from django.http import HttpRequest
 from django.middleware.csrf import get_token
 from django.templatetags.static import static
@@ -18,6 +19,47 @@ from proj.jinja_helpers import (
 from proj.text import tm
 
 from .util import HtpyComponent
+
+
+def MessagesBar(request: HttpRequest):
+    """
+    Useful as a separate component
+    in case a view wants to swap in messages via HTMX
+
+    note that aria-live only announced new messages that are swapped in,
+    not existing messages that are already in the DOM when the page loads
+    """
+    messages = getattr(request, "_messages", None)
+    if not messages:
+
+        messages = get_messages(request)
+
+    message_list = list(messages) or []
+
+    return h.div(
+        id="message-bar",
+        hx_swap_oob="beforeend",
+        hx_swap="beforeend",
+        tabindex="-1",
+        style="position: sticky; top: 0; z-index: 1031;",
+        role="alert",
+        aria_live="polite",
+    )[
+        [
+            h.div(
+                f".django-message.alert.alert-{message_type(msg)}.alert-dismissible.fade.show"
+            )[
+                Markup(str(msg)),
+                h.button(
+                    type="button",
+                    class_="btn-close",
+                    data_bs_dismiss="alert",
+                    aria_label="Close",
+                ),
+            ]
+            for msg in message_list
+        ]
+    ]
 
 
 class BasePageTemplate(HtpyComponent):
@@ -164,32 +206,7 @@ class BasePageTemplate(HtpyComponent):
         )
 
     def messages(self):
-        messages = getattr(self.request, "_messages", None)
-        if not messages:
-            from django.contrib.messages import get_messages
-
-            messages = get_messages(self.request)
-
-        message_list = list(messages)
-        if not message_list:
-            return None
-
-        return h.div(style="margin-top: -1rem;")[
-            [
-                h.div(
-                    f".django-message.alert.alert-{message_type(msg)}.alert-dismissible.fade.show"
-                )[
-                    Markup(str(msg)),
-                    h.button(
-                        type="button",
-                        class_="btn-close",
-                        data_bs_dismiss="alert",
-                        aria_label="Close",
-                    ),
-                ]
-                for msg in message_list
-            ]
-        ]
+        return MessagesBar(self.request)
 
     def content(self):
         return None
@@ -221,7 +238,8 @@ class BasePageTemplate(HtpyComponent):
             self.head(),
             h.body(hx_ext="morph")[
                 h.div(".d-none")[h.div(id="dummy-target")],
-                h.div(id="modal-mount-point", hx_swap_oob="outerHTML"),
+                h.div(id="modal-slot", data_modal_slot=True),
+                h.script(src=static("modal.js")),
                 h.script(src=static("site.js")),
                 self.csrf_script(),
                 self.nav_container(),
@@ -233,9 +251,6 @@ class BasePageTemplate(HtpyComponent):
                             h.div(".ms-5.me-5")[self.content_fluid()],
                         ],
                     ],
-                ],
-                h.div("#modal.modal.fade", tabindex="-1")[
-                    h.div("#dialog.modal-dialog", hx_target="this"),
                 ],
                 self.footer(),
             ],
