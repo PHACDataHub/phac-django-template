@@ -14,6 +14,8 @@ def test_modal_demo_page_renders_all_examples(admin_client):
     assert 'id="nested-modal"' in content
     assert reverse("modal_demo_htmx") in content
     assert reverse("modal_demo_form") in content
+    assert 'id="dropdown-demo-toggle"' in content
+    assert 'data-focus-back="#dropdown-demo-toggle"' in content
 
 
 def test_modal_demo_htmx_view_returns_modal_fragment(admin_client):

@@ -16,6 +16,8 @@
 //   [data-modal-slot]       Landing zone for HTMX-swapped modals (one in base template)
 //   [data-modal-open="id"]  Click opens the static modal with that DOM id.
 //   [data-modal-close]      Click closes the nearest ancestor [data-modal].
+//   [data-focus-back]       Optional CSS selector for where focus should return
+//                           after the modal closes.
 //
 // ## Opening modals
 //
@@ -63,6 +65,7 @@ const ModalStack = (() => {
     const stack = []; // array of { el, previousFocus, backdrop }
     const BASE_Z = 1050;
     const Z_STEP = 20;
+    let pendingTrigger = null;
 
     function currentZ() {
         return BASE_Z + stack.length * Z_STEP;
@@ -87,6 +90,118 @@ const ModalStack = (() => {
     const FOCUSABLE =
         'a[href],button:not([disabled]),textarea:not([disabled]),' +
         'input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    const PROGRAMMATIC_FOCUSABLE = `${FOCUSABLE},[tabindex="-1"]`;
+
+    function isVisible(el) {
+        if (!el || !el.isConnected) {
+            return false;
+        }
+        return el.getClientRects().length > 0;
+    }
+
+    function canFocus(el) {
+        if (!el || !el.matches || typeof el.focus !== "function") {
+            return false;
+        }
+        if (!isVisible(el)) {
+            return false;
+        }
+        if (el.matches("[disabled], [inert]")) {
+            return false;
+        }
+        return el.matches(PROGRAMMATIC_FOCUSABLE);
+    }
+
+    function resolveFocusBackTarget(el) {
+        if (!el || !el.getAttribute) {
+            return null;
+        }
+
+        const selector = el.getAttribute("data-focus-back");
+        if (!selector) {
+            return null;
+        }
+
+        try {
+            return document.querySelector(selector);
+        } catch {
+            return null;
+        }
+    }
+
+    function findClosestFocusableAncestor(el) {
+        let current = el ? el.parentElement : null;
+
+        while (current) {
+            if (canFocus(current)) {
+                return current;
+            }
+            current = current.parentElement;
+        }
+
+        return null;
+    }
+
+    function findNearbyFocusable(el) {
+        if (!el || !el.isConnected) {
+            return null;
+        }
+
+        const nodes = Array.from(
+            document.querySelectorAll(PROGRAMMATIC_FOCUSABLE)
+        ).filter(canFocus);
+
+        let previousNode = null;
+        let nextNode = null;
+
+        for (const node of nodes) {
+            if (node === el) {
+                return previousNode || nextNode;
+            }
+
+            const position = node.compareDocumentPosition(el);
+            if (position & Node.DOCUMENT_POSITION_FOLLOWING) {
+                previousNode = node;
+                continue;
+            }
+            if (!nextNode && position & Node.DOCUMENT_POSITION_PRECEDING) {
+                nextNode = node;
+            }
+        }
+
+        return previousNode || nextNode;
+    }
+
+    function resolveRestoreFocus(el) {
+        const overrideTarget = resolveFocusBackTarget(el);
+        if (canFocus(overrideTarget)) {
+            return overrideTarget;
+        }
+
+        if (canFocus(el)) {
+            return el;
+        }
+
+        const ancestor = findClosestFocusableAncestor(el);
+        if (ancestor) {
+            return ancestor;
+        }
+
+        return findNearbyFocusable(el);
+    }
+
+    function restoreFocus(el, boundary = null) {
+        const target = resolveRestoreFocus(el);
+        if (!target) {
+            return false;
+        }
+        if (boundary && !boundary.contains(target)) {
+            return false;
+        }
+
+        target.focus();
+        return document.activeElement === target;
+    }
 
     function setupFocusTrap(el) {
         function handler(e) {
@@ -126,10 +241,11 @@ const ModalStack = (() => {
         }
     }
 
-    function open(el) {
+    function open(el, trigger = null) {
         if (stack.some((entry) => entry.el === el)) return;
 
-        const previousFocus = document.activeElement;
+        const previousFocus = trigger || pendingTrigger || document.activeElement;
+        pendingTrigger = null;
         const backdrop = createBackdrop(el);
 
         el.style.zIndex = currentZ();
@@ -188,13 +304,11 @@ const ModalStack = (() => {
             // otherwise back to the element that originally triggered the modal.
             if (stack.length) {
                 const topModal = stack[stack.length - 1].el;
-                if (entry.previousFocus && topModal.contains(entry.previousFocus)) {
-                    entry.previousFocus.focus();
-                } else {
+                if (!restoreFocus(entry.previousFocus, topModal)) {
                     focusFirst(topModal);
                 }
-            } else if (entry.previousFocus && entry.previousFocus.focus) {
-                entry.previousFocus.focus();
+            } else {
+                restoreFocus(entry.previousFocus);
             }
 
             el.dispatchEvent(new CustomEvent("modal-closed", { bubbles: true }));
@@ -216,7 +330,19 @@ const ModalStack = (() => {
         return stack.some((entry) => entry.el === el);
     }
 
-    return { open, close, closeCurrent, isOpen, focusFirst, stack };
+    function setPendingTrigger(trigger) {
+        pendingTrigger = trigger;
+    }
+
+    return {
+        open,
+        close,
+        closeCurrent,
+        isOpen,
+        focusFirst,
+        setPendingTrigger,
+        stack,
+    };
 })();
 
 
@@ -246,7 +372,14 @@ document.addEventListener("click", (e) => {
     if (!openBtn) return;
     e.preventDefault();
     const modal = document.getElementById(openBtn.getAttribute("data-modal-open"));
-    if (modal) ModalStack.open(modal);
+    if (modal) ModalStack.open(modal, openBtn);
+});
+
+document.body.addEventListener("htmx:beforeRequest", (e) => {
+    const trigger = e.detail ? e.detail.elt : null;
+    if (!trigger || !trigger.matches) return;
+    if (trigger.getAttribute("hx-target") !== "#modal-slot") return;
+    ModalStack.setPendingTrigger(trigger);
 });
 
 // After HTMX swaps inside a modal (e.g. form re-render with errors),

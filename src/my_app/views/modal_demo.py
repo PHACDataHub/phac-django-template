@@ -132,6 +132,41 @@ class ModalDemo(TemplateView, HtpyTemplatelessMixin):
                 hx_target="#modal-slot",
                 hx_swap="innerHTML",
             )[tdt("Open form modal")],
+            h.h2(".mt-4")["Modal spawned from dissapearing dropdown"],
+            h.p[
+                "since the triggering element dissapears, focus should return to the dropdown toggle"
+            ],
+            h.div[
+                h.button(
+                    ".btn.btn-outline-dark.dropdown-toggle",
+                    type="button",
+                    id="dropdown-demo-toggle",
+                    data_bs_toggle="dropdown",
+                )[tdt("Dropdown")],
+                h.ul(".dropdown-menu")[
+                    h.li[
+                        h.button(
+                            ".dropdown-item",
+                            hx_get=reverse("modal_demo_htmx"),
+                            hx_target="#modal-slot",
+                            hx_swap="innerHTML",
+                            data_focus_back="#random-button",
+                        )[tdt("Open HTMX modal - focus back on diff button")],
+                    ],
+                    h.li[
+                        h.button(
+                            ".dropdown-item",
+                            hx_get=reverse("modal_demo_htmx"),
+                            hx_target="#modal-slot",
+                            hx_swap="innerHTML",
+                            # data_focus_back="#dropdown-demo-toggle",
+                        )[tdt("open modal - default focus-back on ancestor")],
+                    ],
+                ],
+            ],
+            h.button("#random-button.btn.btn-primary.my-4")[
+                tdt("Random button to test focus")
+            ],
         ]
 
 
@@ -167,7 +202,7 @@ class ModalFormView(View):
     How it works:
       GET  -> renders the full modal into the slot, auto-opens
              The form inside has hx-post pointing back to this same URL,
-             targeting #modal-body (the modal's body div) so swaps stay
+             targeting .modal-body (the modal's body div) so swaps stay
              inside the open modal
       POST (valid) -> calls form_valid(), returns 204 + HX-Trigger: modal-close
       POST (invalid) -> re-renders just the modal body (form with errors),
@@ -187,7 +222,7 @@ class ModalFormView(View):
         return h.form(
             method="post",
             hx_post=self.request.path,
-            hx_target="#modal-body",
+            hx_target="closest .modal-body",
             hx_swap="innerHTML",
             novalidate=True,
         )[

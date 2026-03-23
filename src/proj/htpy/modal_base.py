@@ -24,13 +24,18 @@ def ModalComponent(
     wrapper_attrs = {
         "data_modal": True,
         "aria_hidden": "true",
+        "class": ["modal", size_cls],
     }
     if modal_id:
         wrapper_attrs["id"] = modal_id
 
     return h.div(**wrapper_attrs)[
-        h.div(class_=["modal-dialog", size_cls])[
-            h.div(".modal-content.p-2")[
+        h.div(
+            class_=[
+                "modal-dialog",
+            ]
+        )[
+            h.div(".modal-content")[
                 h.div(".modal-header")[
                     h.div[title],
                     h.button(
@@ -40,7 +45,7 @@ def ModalComponent(
                         aria_label="Close",
                     ),
                 ],
-                h.div(".modal-body", id="modal-body")[children],
+                h.div(".modal-body")[children],
                 h.div(".modal-footer")[
                     h.button(
                         type="button",
