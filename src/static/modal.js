@@ -16,6 +16,9 @@
 //   [data-modal-slot]       Landing zone for HTMX-swapped modals (one in base template)
 //   [data-modal-open="id"]  Click opens the static modal with that DOM id.
 //   [data-modal-close]      Click closes the nearest ancestor [data-modal].
+//   [data-modal-close-on-outside-click="false"]
+//                           Disables closing when the backdrop or modal shell
+//                           is clicked outside the dialog content.
 //   [data-focus-back]       Optional CSS selector for where focus should return
 //                           after the modal closes.
 //
@@ -58,7 +61,8 @@
 //   - After an HTMX swap inside a modal (e.g. form errors), focus moves to
 //     the first .alert-danger element, or the first focusable element.
 //   - Modals have role="dialog" and aria-modal="true" while open.
-//   - Backdrop clicks and Escape key close the topmost modal
+//   - Backdrop clicks and shell clicks close the topmost modal unless disabled
+//   - Escape key closes the topmost modal
 //
 
 const ModalStack = (() => {
@@ -326,6 +330,23 @@ const ModalStack = (() => {
         }
     }
 
+    function closesOnOutsideClick(el) {
+        return el.getAttribute("data-modal-close-on-outside-click") !== "false";
+    }
+
+    function closeCurrentFromOutsideClick() {
+        if (!stack.length) {
+            return;
+        }
+
+        const currentModal = stack[stack.length - 1].el;
+        if (!closesOnOutsideClick(currentModal)) {
+            return;
+        }
+
+        close(currentModal);
+    }
+
     function isOpen(el) {
         return stack.some((entry) => entry.el === el);
     }
@@ -338,6 +359,7 @@ const ModalStack = (() => {
         open,
         close,
         closeCurrent,
+        closeCurrentFromOutsideClick,
         isOpen,
         focusFirst,
         setPendingTrigger,
@@ -356,8 +378,21 @@ document.addEventListener("keydown", (e) => {
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("modal-stack-backdrop")) {
-        ModalStack.closeCurrent();
+        ModalStack.closeCurrentFromOutsideClick();
     }
+});
+
+document.addEventListener("click", (e) => {
+    if (!ModalStack.stack.length) {
+        return;
+    }
+
+    const topModal = ModalStack.stack[ModalStack.stack.length - 1].el;
+    if (e.target !== topModal) {
+        return;
+    }
+
+    ModalStack.closeCurrentFromOutsideClick();
 });
 
 document.addEventListener("click", (e) => {

@@ -16,6 +16,7 @@ def ModalComponent(
     size_cls=None,
     modal_id=None,
     close_button_text=None,
+    close_on_outside_click=True,
 ):
 
     if not close_button_text:
@@ -26,6 +27,10 @@ def ModalComponent(
         "aria_hidden": "true",
         "class": ["modal", size_cls],
     }
+
+    if not close_on_outside_click:
+        wrapper_attrs["data_modal_close_on_outside_click"] = "false"
+
     if modal_id:
         wrapper_attrs["id"] = modal_id
 

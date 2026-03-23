@@ -55,6 +55,22 @@ def NestedModal():
     )[h.p[tdt("nested_modal_body")]]
 
 
+def NonClosingModal():
+    """
+    Demonstrates the option to prevent closing on outside click by adding
+    data-modal-close-on-outside-click="false" to the modal wrapper.
+    """
+    return ModalComponent(
+        title="Non-closing modal",
+        modal_id="non-closing-modal",
+        close_on_outside_click=False,
+    )[
+        h.p[
+            "this modal will not close when clicking outside, but will close with the buttons or escape key"
+        ]
+    ]
+
+
 def HtmxModal():
     """
     Fetched from the server via HTMX, swapped into #modal-slot.
@@ -166,6 +182,12 @@ class ModalDemo(TemplateView, HtpyTemplatelessMixin):
             ],
             h.button("#random-button.btn.btn-primary.my-4")[
                 tdt("Random button to test focus")
+            ],
+            h.div[
+                h.button(
+                    ".btn.btn-secondary", data_modal_open="non-closing-modal"
+                )[tdt("Open non-closing modal")],
+                NonClosingModal(),
             ],
         ]
 
