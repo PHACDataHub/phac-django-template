@@ -49,13 +49,18 @@ def MessagesBar(request: HttpRequest):
             h.div(
                 f".django-message.alert.alert-{message_type(msg)}.alert-dismissible.fade.show"
             )[
-                Markup(str(msg)),
-                h.button(
-                    type="button",
-                    class_="btn-close",
-                    data_bs_dismiss="alert",
-                    aria_label="Close",
-                ),
+                h.div({"class": "container", "style": "position: relative;"})[
+                    h.div[
+                        Markup(str(msg)),
+                        h.button(
+                            type="button",
+                            class_="btn-close",
+                            data_bs_dismiss="alert",
+                            aria_label="Close",
+                            style="padding: 0.25em;",
+                        ),
+                    ]
+                ]
             ]
             for msg in message_list
         ]
