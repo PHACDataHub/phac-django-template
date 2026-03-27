@@ -189,6 +189,18 @@ class ModalDemo(TemplateView, HtpyTemplatelessMixin):
                 )[tdt("Open non-closing modal")],
                 NonClosingModal(),
             ],
+            h.h2["Alternative slot"],
+            h.div[
+                h.div(
+                    {"data-modal-slot": True, "id": "alternative-modal-slot"}
+                ),
+                h.button(
+                    ".btn.btn-warning",
+                    hx_get=reverse("modal_demo_htmx"),
+                    hx_target="#alternative-modal-slot",
+                    hx_swap="innerHTML",
+                )[tdt("Load modal into alternative slot")],
+            ],
         ]
 
 
