@@ -113,7 +113,7 @@ class BasePageTemplate(HtpyComponent):
                 href=static("third_party/css/bootstrap.min.css"),
             ),
             h.link(rel="stylesheet", href=static("site.css")),
-            h.script(src=static("third_party/js/jquery-3.2.1.min.js")),
+            h.script(src=static("third_party/js/jquery-3.7.1.min.js")),
             h.script(src=static("third_party/js/htmx.min.js")),
             h.script(src=static("third_party/js/idiomorph.min.js")),
             h.script(src=static("third_party/js/idiomorph-ext.min.js")),
@@ -258,6 +258,7 @@ class BasePageTemplate(HtpyComponent):
                     ],
                 ],
                 self.footer(),
+                phac_aspc.phac_aspc_wet_scripts(include_jquery=False),
             ],
         ]
 
