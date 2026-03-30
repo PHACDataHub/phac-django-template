@@ -269,7 +269,7 @@ const ModalStack = (() => {
         });
     }
 
-    function close(el) {
+    function close(el, restoreFocusOnClose = true) {
         const idx = stack.findIndex((entry) => entry.el === el);
         if (idx === -1) return;
 
@@ -304,15 +304,17 @@ const ModalStack = (() => {
                 document.body.classList.remove("modal-stack-active");
             }
 
-            // Restore focus into the parent modal if one is still open,
-            // otherwise back to the element that originally triggered the modal.
-            if (stack.length) {
-                const topModal = stack[stack.length - 1].el;
-                if (!restoreFocus(entry.previousFocus, topModal)) {
-                    focusFirst(topModal);
+            if (restoreFocusOnClose) {
+                // Restore focus into the parent modal if one is still open,
+                // otherwise back to the element that originally triggered the modal.
+                if (stack.length) {
+                    const topModal = stack[stack.length - 1].el;
+                    if (!restoreFocus(entry.previousFocus, topModal)) {
+                        focusFirst(topModal);
+                    }
+                } else {
+                    restoreFocus(entry.previousFocus);
                 }
-            } else {
-                restoreFocus(entry.previousFocus);
             }
 
             el.dispatchEvent(new CustomEvent("modal-closed", { bubbles: true }));
@@ -366,6 +368,8 @@ const ModalStack = (() => {
         stack,
     };
 })();
+
+window.ModalStack = ModalStack;
 
 
 // ── Event listeners ──

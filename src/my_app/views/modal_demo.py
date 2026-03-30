@@ -55,6 +55,41 @@ def NestedModal():
     )[h.p[tdt("nested_modal_body")]]
 
 
+def ProgrammaticModal():
+    return ModalComponent(
+        size_cls="modal-xl",
+        title="Programmatic JS modal",
+        modal_id="programmatic-modal",
+    )[
+        h.p[
+            "This modal is opened with JavaScript instead of a data-modal-open attribute."
+        ],
+        h.pre(".bg-light.border.rounded.p-3")[
+            h.code[
+                'window.ModalStack.open(document.getElementById("programmatic-modal"))'
+            ]
+        ],
+        h.p(".mt-3")[
+            "This button closes the modal by calling the modal JS API directly."
+        ],
+        h.pre(".bg-light.border.rounded.p-3")[
+            h.code[
+                'window.ModalStack.close(document.getElementById("programmatic-modal"))'
+            ]
+        ],
+        h.button(
+            ".btn.btn-outline-primary",
+            type="button",
+            onclick='window.ModalStack.close(document.getElementById("programmatic-modal"))',
+        )["Close modal via JS"],
+        h.button(
+            ".btn.btn-outline-primary",
+            type="button",
+            onclick='window.ModalStack.close(document.getElementById("programmatic-modal"),false)',
+        )["Close modal via JS w/out resetting focus"],
+    ]
+
+
 def NonClosingModal():
     """
     Demonstrates the option to prevent closing on outside click by adding
@@ -123,6 +158,15 @@ class ModalDemo(TemplateView, HtpyTemplatelessMixin):
             )[tdt("Open static modal")],
             StaticModal(),
             NestedModal(),
+            h.hr,
+            h.h2["Programmatic JS modal"],
+            h.p["Open this static modal by calling JavaScript directly."],
+            h.button(
+                ".btn.btn-dark",
+                type="button",
+                onclick='window.ModalStack.open(document.getElementById("programmatic-modal"))',
+            )["Open static modal via JS"],
+            ProgrammaticModal(),
             h.hr,
             # ── 2. HTMX-swapped modal ──
             h.h2[tdt("HTMX modal")],
