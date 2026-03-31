@@ -219,7 +219,6 @@ class ModalDemo(TemplateView, HtpyTemplatelessMixin):
                             hx_get=reverse("modal_demo_htmx"),
                             hx_target="#modal-slot",
                             hx_swap="innerHTML",
-                            # data_focus_back="#dropdown-demo-toggle",
                         )[tdt("open modal - default focus-back on ancestor")],
                     ],
                 ],

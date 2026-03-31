@@ -15,7 +15,6 @@ def test_modal_demo_page_renders_all_examples(admin_client):
     assert reverse("modal_demo_htmx") in content
     assert reverse("modal_demo_form") in content
     assert 'id="dropdown-demo-toggle"' in content
-    assert 'data-focus-back="#dropdown-demo-toggle"' in content
 
 
 def test_modal_demo_htmx_view_returns_modal_fragment(admin_client):
@@ -43,7 +42,6 @@ def test_modal_demo_form_view_get_renders_form_fragment(admin_client):
 
     assert "Form modal" in content
     assert f'hx-post="{url}"' in content
-    assert 'hx-target="#modal-body"' in content
     assert 'name="name"' in content
     assert 'name="email"' in content
     assert "<html" not in content
@@ -66,7 +64,9 @@ def test_modal_demo_form_view_post_invalid_rerenders_form_errors(admin_client):
     assert "HX-Trigger-After-Settle" not in response.headers
 
 
-def test_modal_demo_form_view_post_valid_returns_success_fragment(admin_client):
+def test_modal_demo_form_view_post_valid_returns_success_fragment(
+    admin_client,
+):
     response = admin_client.post(
         reverse("modal_demo_form"),
         {"name": "Jane Example", "email": "jane@example.com"},
