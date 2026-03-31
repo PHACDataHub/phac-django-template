@@ -1,5 +1,6 @@
-import htpy as h
 from django.middleware.csrf import get_token
+
+import htpy as h
 
 from proj.htpy.base_page import BasePageTemplate
 from proj.text import tm
@@ -36,7 +37,9 @@ class LoginPageTemplate(BasePageTemplate):
                         else None
                     ),
                     (
-                        h.div(".alert.alert-danger.alert-dismissible.fade.show")[
+                        h.div(
+                            ".alert.alert-danger.alert-dismissible.fade.show"
+                        )[
                             h.span[tm("bad_user_name_and_password")],
                             h.button(
                                 type="button",
@@ -78,7 +81,9 @@ class LoginPageTemplate(BasePageTemplate):
                                 )[form["password"].label],
                             ],
                             h.input(
-                                type="hidden", name="next", value=next_url or ""
+                                type="hidden",
+                                name="next",
+                                value=next_url or "",
                             ),
                             h.div(".row")[
                                 h.div(".col-auto")[

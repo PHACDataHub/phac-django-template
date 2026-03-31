@@ -24,7 +24,9 @@ class GenericForm(HtpyComponent):
                 [
                     [
                         (
-                            h.div(".alert.alert-danger")[Markup(str(field.errors))]
+                            h.div(".alert.alert-danger")[
+                                Markup(str(field.errors))
+                            ]
                             if field.errors
                             else None
                         ),
