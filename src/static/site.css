@@ -1,5 +1,3 @@
-@import url('./modal.css');
-
 /* messages */
 #message-bar:has(.django-message) {
     margin-top: -1rem;

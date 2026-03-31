@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.messages import get_messages
 from django.http import HttpRequest
 from django.middleware.csrf import get_token
@@ -19,6 +20,10 @@ from proj.jinja_helpers import (
 from proj.text import tm
 
 from .util import HtpyComponent
+
+
+def static_no_cache(path):
+    return static(path) + f"?v={settings.STATIC_BUST_TOKEN}"
 
 
 def MessagesBar(request: HttpRequest):
@@ -112,7 +117,7 @@ class BasePageTemplate(HtpyComponent):
                 rel="stylesheet",
                 href=static("third_party/css/bootstrap.min.css"),
             ),
-            h.link(rel="stylesheet", href=static("site.css")),
+            h.link(rel="stylesheet", href=static_no_cache("site.css")),
             h.script(src=static("third_party/js/jquery-3.7.1.min.js")),
             h.script(src=static("third_party/js/htmx.min.js")),
             h.script(src=static("third_party/js/idiomorph.min.js")),
@@ -244,8 +249,14 @@ class BasePageTemplate(HtpyComponent):
             h.body(hx_ext="morph")[
                 h.div(".d-none")[h.div(id="dummy-target")],
                 h.div(id="modal-slot", data_modal_slot=True),
-                h.script(src=static("modal.js")),
-                h.script(src=static("site.js")),
+                h.script(
+                    src=static_no_cache("phac_aspc_helpers/modal/modal.js")
+                ),
+                h.link(
+                    rel="stylesheet",
+                    href=static_no_cache("phac_aspc_helpers/modal/modal.css"),
+                ),
+                h.script(src=static_no_cache("site.js")),
                 self.csrf_script(),
                 self.nav_container(),
                 h.main(".pt-3.pb-5", style="min-height: 85vh")[
